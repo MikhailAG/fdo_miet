@@ -1,12 +1,23 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import {Login} from './login.jsx'
+import {Login} from './login.jsx';
+import {Home} from './home.jsx';
+import {useNavigate} from '../hooks/useNavigate.js';
 
-export function Provider() {
+export function PageProvider() {
+    const {currentPath} = useNavigate();
+
+    const renderComponent = () => {
+        console.log(currentPath);
+        switch (currentPath) {
+            case '/login':
+                return <Login/>;
+            default:
+                return <Home/>;
+        }
+    };
+
     return (
-      <Router>
-        <Routes>
-          <Route path="/login" element={<Login/>}/>
-        </Routes>
-      </Router>
-    )
+        <div>
+            {renderComponent()}
+        </div>
+    );
 }

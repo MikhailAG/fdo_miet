@@ -1,5 +1,5 @@
-import { Button, Checkbox, Group, TextInput } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import {Button, Checkbox, Group, TextInput} from '@mantine/core';
+import {useForm} from '@mantine/form';
 
 export function Login() {
     const form = useForm({
@@ -28,7 +28,7 @@ export function Login() {
                 mt="md"
                 label="I agree to sell my privacy"
                 key={form.key('termsOfService')}
-                {...form.getInputProps('termsOfService', { type: 'checkbox' })}
+                {...form.getInputProps('termsOfService', {type: 'checkbox'})}
             />
 
             <Group justify="flex-end" mt="md">
