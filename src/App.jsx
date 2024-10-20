@@ -1,7 +1,7 @@
 import {Header} from './components/header.jsx';
 import {Footer} from './components/footer.jsx';
 import {PageProvider} from './components/provider.jsx';
-import {NavigationProvider} from './components/NavigationContext.jsx';
+import {NavigationProvider} from './components/navigationContext.jsx';
 
 function App() {
     return (

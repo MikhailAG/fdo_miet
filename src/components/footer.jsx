@@ -1,10 +1,18 @@
+import {useNavigate} from "../hooks/useNavigate.js";
+import {Button} from "@mantine/core";
+
 export function Footer() {
+    const {navigate} = useNavigate();
+
     return (
-        <div className='w-100 bg-blue-950 py-10 px-20 flex justify-between'>
+        <div className='w-100 bg-[#01183a] py-10 px-20 flex justify-between'>
             <div className='flex flex-col text-white ml-10 space-y-3 px-5 border-r-2'>
-                <a href='/'>Главная страница</a>
-                <a href='/classes'>Занятия</a>
-                <a href='/learning'>Обучение</a>
+                <Button justify="right" variant='subtle' color="white" onClick={() => navigate('/')}>Главная
+                    страница</Button>
+                <Button justify="right" variant='subtle' color="white"
+                        onClick={() => navigate('/classes')}>Занятия</Button>
+                <Button justify="right" variant='subtle' color="white"
+                        onClick={() => navigate('/learning')}>Обучение</Button>
             </div>
             <div className='text-white text-center'>
                 Сайт сделан студентом университета НИУ МИЭТ<br/>

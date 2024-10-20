@@ -1,39 +1,46 @@
-import {Button, Checkbox, Group, TextInput} from '@mantine/core';
-import {useForm} from '@mantine/form';
+import {Button, PasswordInput, TextInput} from '@mantine/core';
+import {useState} from "react";
+import {useNavigate} from "../hooks/useNavigate.js";
 
 export function Login() {
-    const form = useForm({
-        mode: 'uncontrolled',
-        initialValues: {
-            email: '',
-            termsOfService: false,
-        },
+    const [login, setLogin] = useState('');
+    const [errors, setErrors] = useState();
+    const [password, setPassword] = useState('');
+    const valid = password !== '' && login !== ''
+    const {navigate} = useNavigate();
 
-        validate: {
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-        },
-    });
+    const submit = async (event) => {
+        event.preventDefault();
+
+        try {
+            const response = await fetch('http://localhost:3000/api/v1/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({'email': login, 'password': password}),
+            });
+
+            if (!response.ok) {
+                throw new Error('Неверный логин или пароль');
+            }
+
+            const result = await response.json();
+            localStorage.setItem('token', result.token);
+            navigate('/me')
+        } catch (error) {
+            setErrors(error.message);
+        }
+    };
 
     return (
-        <form className='w-1/4 mx-auto' onSubmit={form.onSubmit((values) => console.log(values))}>
-            <TextInput
-                withAsterisk
-                label="Email"
-                placeholder="your@email.com"
-                key={form.key('email')}
-                {...form.getInputProps('email')}
-            />
-
-            <Checkbox
-                mt="md"
-                label="I agree to sell my privacy"
-                key={form.key('termsOfService')}
-                {...form.getInputProps('termsOfService', {type: 'checkbox'})}
-            />
-
-            <Group justify="flex-end" mt="md">
-                <Button type="submit">Submit</Button>
-            </Group>
-        </form>
+        <div className='w-1/4 mx-auto my-10 space-y-5'>
+            {errors && (
+                <p>{errors}</p>
+            )}
+            <TextInput value={login} onChange={(event) => setLogin(event.currentTarget.value)} radius='md'
+                       label='Логин'/>
+            <PasswordInput value={password} onChange={(event) => setPassword(event.currentTarget.value)} radius='md'
+                           label='Пароль'/>
+            <Button color="#01183a" onClick={submit} data-disabled={!valid}>Войти</Button>
+        </div>
     );
 }
